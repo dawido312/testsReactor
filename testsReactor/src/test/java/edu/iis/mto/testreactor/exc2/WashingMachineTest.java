@@ -49,7 +49,7 @@ public class WashingMachineTest {
 
         washingMachine = new WashingMachine(dirtDetector, engine, waterPump);
         when(dirtDetector.detectDirtDegree(any(LaundryBatch.class))).thenReturn(percentage);
-
+        doNothing().when(waterPump).pour(any(Double.class));
     }
 
 
@@ -78,7 +78,7 @@ public class WashingMachineTest {
     }
 
     @Test
-    public void testIfDetectDirtDegreeMethodWillBeInvoked()
+    public void testIfDetectDirtDegreeMethodWillBeInvokedOnce()
     {
         builder1.withSpin(true);
         builder1.withProgram(Program.AUTODETECT);
@@ -93,5 +93,14 @@ public class WashingMachineTest {
     {
         builder.withWeightKg(-9.0);
     }
+
+    @Test
+    public void testIfPourMethodWillBeInvokedOnce()
+    {
+        washingMachine.start(laundryBatch, programConfiguration);
+        verify(waterPump, times(1)).pour(any(Double.class));
+    }
+
+
 
 }
