@@ -3,7 +3,7 @@ package edu.iis.mto.testreactor.exc2;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -34,6 +34,7 @@ public class WashingMachineTest {
     public void init()
     {
         MockitoAnnotations.initMocks(this);
+        percentage = new Percentage(0);
         builder = LaundryBatch.builder();
         builder.withWeightKg(1.0);
         builder.withType(Material.WOOL);
@@ -68,12 +69,22 @@ public class WashingMachineTest {
     @Test
     public void testIfWashWithTooHeavyBatchWillBeFailure()
     {
-        builder = LaundryBatch.builder();
         builder.withWeightKg(9.0);
         builder.withType(Material.WOOL);
         laundryBatch = builder.build();
         LaundryStatus laundryStatus = washingMachine.start(laundryBatch, programConfiguration);
         Assert.assertThat(laundryStatus.getResult(), is(Result.FAILURE));
+
+    }
+
+    @Test
+    public void testIfDetectDirtDegreeMethodWillBeInvoked()
+    {
+        builder1.withSpin(true);
+        builder1.withProgram(Program.AUTODETECT);
+        programConfiguration = builder1.build();
+        washingMachine.start(laundryBatch, programConfiguration);
+        verify(dirtDetector, times(1)).detectDirtDegree(any(LaundryBatch.class));
 
     }
 
