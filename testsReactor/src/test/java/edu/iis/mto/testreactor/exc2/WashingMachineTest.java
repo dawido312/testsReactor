@@ -50,6 +50,7 @@ public class WashingMachineTest {
         washingMachine = new WashingMachine(dirtDetector, engine, waterPump);
         when(dirtDetector.detectDirtDegree(any(LaundryBatch.class))).thenReturn(percentage);
         doNothing().when(waterPump).pour(any(Double.class));
+        doNothing().when(engine).spin();
     }
 
 
@@ -101,6 +102,11 @@ public class WashingMachineTest {
         verify(waterPump, times(1)).pour(any(Double.class));
     }
 
-
+    @Test
+    public void testIfSpinMethodWillBeInvokeOnce()
+    {
+        washingMachine.start(laundryBatch, programConfiguration);
+        verify(engine, times(1)).spin();
+    }
 
 }
