@@ -65,5 +65,16 @@ public class WashingMachineTest {
         Assert.assertThat(laundryStatus.getResult(), is(Result.SUCCESS));
     }
 
+    @Test
+    public void testIfWashWithTooHeavyBatchWillBeFailure()
+    {
+        builder = LaundryBatch.builder();
+        builder.withWeightKg(9.0);
+        builder.withType(Material.WOOL);
+        laundryBatch = builder.build();
+        LaundryStatus laundryStatus = washingMachine.start(laundryBatch, programConfiguration);
+        Assert.assertThat(laundryStatus.getResult(), is(Result.FAILURE));
+
+    }
 
 }
