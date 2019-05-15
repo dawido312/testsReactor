@@ -18,6 +18,8 @@ public class WashingMachineTest {
     LaundryBatch laundryBatch;
     ProgramConfiguration programConfiguration;
     Percentage percentage;
+    LaundryBatch.Builder builder;
+    ProgramConfiguration.Builder builder1;
 
     @Mock
     DirtDetector dirtDetector;
@@ -32,13 +34,13 @@ public class WashingMachineTest {
     public void init()
     {
         MockitoAnnotations.initMocks(this);
-        LaundryBatch.Builder builder = LaundryBatch.builder();
+        builder = LaundryBatch.builder();
         builder.withWeightKg(1.0);
         builder.withType(Material.WOOL);
         laundryBatch = builder.build();
 
 
-        ProgramConfiguration.Builder builder1 = ProgramConfiguration.builder();
+        builder1 = ProgramConfiguration.builder();
         builder1.withSpin(true);
         builder1.withProgram(Program.SHORT);
         builder.withWeightKg(1.0);
@@ -53,6 +55,14 @@ public class WashingMachineTest {
     @Test
     public void itCompiles() {
         assertThat(true, Matchers.equalTo(true));
+    }
+
+
+    @Test
+    public void testIfFunctionWithCorrectParameteresWillSuccess()
+    {
+        LaundryStatus laundryStatus = washingMachine.start(laundryBatch, programConfiguration);
+        Assert.assertThat(laundryStatus.getResult(), is(Result.SUCCESS));
     }
 
 
