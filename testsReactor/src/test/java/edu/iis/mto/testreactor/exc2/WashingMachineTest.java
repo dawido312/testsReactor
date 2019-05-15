@@ -88,4 +88,10 @@ public class WashingMachineTest {
 
     }
 
+    @Test (expected = IllegalArgumentException.class)
+    public void testIfIllegalArgumentExceptionWillBeThrown()
+    {
+        builder.withWeightKg(-9.0);
+    }
+
 }

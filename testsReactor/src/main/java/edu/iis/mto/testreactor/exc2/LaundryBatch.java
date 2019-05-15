@@ -37,6 +37,7 @@ public class LaundryBatch {
         private Builder() {}
 
         public Builder withWeightKg(double weightKg) {
+            if (weightKg<0) throw new IllegalArgumentException();
             this.weightKg = weightKg;
             return this;
         }
@@ -49,6 +50,8 @@ public class LaundryBatch {
         public LaundryBatch build() {
             return new LaundryBatch(this);
         }
+
+
     }
 
 }
